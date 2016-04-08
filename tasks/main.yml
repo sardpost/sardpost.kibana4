@@ -1,0 +1,8 @@
+---
+# tasks file for sardpost.kibana4
+
+- name: "RHEL/Centos | Starting Kibana 4.5 installation"
+  include: "EL.yml"
+  when: ansible_os_family == "RedHat"
+  tags:
+    - always

@@ -1,0 +1,36 @@
+---
+# tasks file for sardpost.kibana
+# Tasks specific for RHEL/Centos systems
+
+- name: RHEL/Centos | Importing rpm GPG key for Kibana 4.5 repository
+  rpm_key: state=present key=https://packages.elastic.co/GPG-KEY-elasticsearch
+
+- name: "RHEL/Centos | Installing Kibana 4.5 repository"
+  template: "src=kibana.repo.j2
+            dest=/etc/yum.repos.d/kibana.repo
+            owner=root
+            group=root
+            mode=0644"
+  tags:
+    - kibana
+    - init
+
+- name: "RHEL/Centos | Enabling Kibana 4.5 repository"
+  ini_file: dest=/etc/yum.repos.d/kibana.repo section=kibana-4.5 option=enabled value=1
+
+- name: "RHEL/Centos | Installing Kibana 4.5.x"
+  yum: name={{ item }} state=present
+  with_items:
+    - kibana
+  tags:
+    - kibana
+    - init
+
+- name: "RHEL/Centos | Reloading systemd"
+  command: systemctl daemon-reload
+
+- name: "RHEL/Centos | Enabling and starting Kibana 4.5 service"
+  service: name=kibana state=started enabled=yes
+  tags: kibana
+
+- debug: msg="Kibana Portal Access http':'//<kibana_server-ip-address>':'5601/"

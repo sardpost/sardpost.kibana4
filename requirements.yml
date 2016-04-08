@@ -1,0 +1,3 @@
+---
+- src: sardpost.elasticsearch
+  path: roles
