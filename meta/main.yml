@@ -12,4 +12,5 @@ galaxy_info:
   categories:
   - system
   - web
-dependencies:[]
+dependencies:
+  - sardpost.elasticsearch
